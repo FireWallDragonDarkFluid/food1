@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+  <!-- Showcase -->
+  <section id="showcase">
+    <div class="container text-center">
+      <div class="home-search p-5">
+        <div class="overlay p-5">
+          <h1 class="display-4 mb-4">
+            找餐廳? 用 FOODVAGO 就對了!
+          </h1>
+          <p class="lead">Foodvago 讓你即便宅在家裡面，也可以輕鬆找得到美食!!!&nbsp;&nbsp;&nbsp;輸入關鍵字，Foodvago會篩選出合適的餐廳!!!</p>
+          <div class="search">
+            <form action="{% url 'search' %}">
+              <!-- Form Row 1 -->
+              <div class="form-row">
+                <div class="col-md-4 mb-3">
+                  <label class="sr-only">Keywords</label>
+                  <input type="text" name="keywords" class="form-control" placeholder="快速搜尋 (ex: 飲料, 咖哩)">
+                </div>
+
+                <div class="col-md-4 mb-3">
+                  <label class="sr-only">City</label>
+                  <input type="text" name="city" class="form-control" placeholder="地點 (ex: 大安區)">
+                </div>
+
+                <div class="col-md-4 mb-3">
+                  <label class="sr-only">type</label>
+                  <select name="type" class="form-control">
+                    <option selected="true" disabled="disabled">類別 (全選)</option>
+                    {% for key,value in type_choices.items %}
+                      <option value="{{key}}">{{value}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <!-- Form Row 2 -->
+              <div class="form-row">
+                <div class="col-md-6 mb-3">
+                  <label class="sr-only">title</label>
+                  <input type='text' name="title" class="form-control" placeholder="店名 (ex: 安好食)">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <select name="price" class="form-control" id="type">
+                    <option selected="true" disabled="disabled">價格上限 (全選)</option>
+                    {% for key,value in price_choices.items %}
+                      <option value="{{key}}">${{value}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <button class="btn btn-secondary btn-block mt-4" type="submit">確&nbsp;認&nbsp;送&nbsp;出</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Listings -->
+  <section id="listings" class="py-5">
+    <div class="container">
+      <h3 class="text-center mb-3">推薦店家</h3>
+      <div class="row">
+        {% if listings %}
+          {% for listing in listings %}
+            <!-- Listing 1 -->
+            <div class="col-md-6 col-lg-4 mb-4">
+              <div class="card listing-preview">
+                <img class="card-img-top" src="{{listing.photo_main.url}}" alt="">
+                <div class="card-img-overlay">
+                  <h2>
+                    <span class="badge badge-secondary text-white">${{listing.price}}</span>
+                  </h2>
+                </div>
+                <div class="card-body">
+                  <div class="listing-heading text-center">
+                    <h4 class="text-primary">{{listing.title}}</h4>
+                    <p>
+                      <i class="fas fa-map-marker text-secondary"></i>{{listing.address}}</p>
+                  </div>
+                  <hr>
+                  <div class="row py-2 text-secondary">
+                    <div class="col-6">
+                      <i class="far fa-thumbs-up"></i> {{listing.item1}}</div>
+                    <div class="col-6">
+                      <i class="far fa-thumbs-up"></i> {{listing.item2}}</div>
+                  </div>
+                  <div class="row py-2 text-secondary">
+                    <div class="col-6">
+                      <i class="far fa-thumbs-up"></i> {{listing.item3}}</div>
+                    <div class="col-6">
+                      <i class="far fa-thumbs-up"></i> {{listing.item4}}</div>
+                  </div>
+                  <hr>
+                  <div class="row py-2 text-secondary">
+                    <div class="col-12">
+                      <i class="fas fa-user"></i>&nbsp; Tel : {{listing.tel}}</div>
+                  </div>
+                  <div class="row text-secondary pb-2">
+                    <div class="col-12">
+                      <i class="fas fa-clock"></i> {{listing.work_time}}</div>
+                  </div>
+                  <hr>
+                  <a href="{% url 'listing' listing.id %}" class="btn btn-primary btn-block">更多資訊</a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="col-md-12">
+            <p>No Listings Available</p>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+
+{% endblock %}
